@@ -1,0 +1,16 @@
+# Playwright and Testing Framework
+playwright>=1.40.0
+pytest-playwright>=0.4.0
+pytest>=7.0.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Reporting (optional but recommended)
+pytest-html>=4.1.0
+pytest-xdist>=3.5.0
+
+# Code Quality (optional)
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
