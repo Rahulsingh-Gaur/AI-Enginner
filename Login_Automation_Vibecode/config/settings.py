@@ -3,10 +3,12 @@ Configuration settings for the automation framework.
 Loads settings from environment variables with sensible defaults.
 """
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables from .env file in the config directory
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 
 class Settings:
@@ -27,6 +29,10 @@ class Settings:
     # Test credentials
     USERNAME = os.getenv("USERNAME", "")
     PASSWORD = os.getenv("PASSWORD", "")
+
+    # KIMI / Eraler API keys (set these in environment or .env, do NOT commit secrets)
+    KIMI_API_KEY = os.getenv("KIMI_API_KEY", "")
+    ERALER_API_KEY = os.getenv("ERALER_API_KEY", "")
     
     # Timeouts (in milliseconds)
     DEFAULT_TIMEOUT = int(os.getenv("DEFAULT_TIMEOUT", "30000"))
