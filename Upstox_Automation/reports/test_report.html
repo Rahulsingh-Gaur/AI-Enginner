@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upstox Automation - Test Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .card.pass .value { color: #28a745; }
+        .card.fail .value { color: #dc3545; }
+        .card.skip .value { color: #ffc107; }
+        .card.total .value { color: #007bff; }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .results-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .results-table h2 {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.skip {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .error-msg {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Upstox Automation - Test Report</h1>
+            <p>Generated on 2026-02-12 01:48:45</p>
+        </div>
+        
+        <div class="summary-cards">
+            <div class="card total">
+                <h3>Total Tests</h3>
+                <div class="value">1</div>
+            </div>
+            <div class="card pass">
+                <h3>Passed</h3>
+                <div class="value">0</div>
+            </div>
+            <div class="card fail">
+                <h3>Failed</h3>
+                <div class="value">0</div>
+            </div>
+            <div class="card skip">
+                <h3>Skipped</h3>
+                <div class="value">0</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Pass Rate</h3>
+            <div class="value" style="color: #dc3545;">
+                0.0%
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0.0%"></div>
+            </div>
+        </div>
+        
+        <div class="results-table" style="margin-top: 20px;">
+            <h2>📋 Test Results</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test ID</th>
+                        <th>Description</th>
+                        <th>User Input</th>
+                        <th>Status</th>
+                        <th>Execution Time</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td><strong>TEST-01</strong></td>
+            <td>Regression</td>
+            <td>-</td>
+            <td><span class="status error">ERROR</span></td>
+            <td>-s</td>
+            <td>
+                -
+            </td>
+        </tr>
+        
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>Upstox Automation Framework v1.0 | Report generated automatically</p>
+        </div>
+    </div>
+</body>
+</html>

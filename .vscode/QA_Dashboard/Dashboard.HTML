@@ -1,0 +1,2101 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>QA Task Manager — Daily Task Management System</title>  
+    <style>  
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');  
+  
+        :root {  
+            --primary: #6366f1;  
+            --primary-light: #818cf8;  
+            --primary-dark: #4f46e5;  
+            --primary-bg: #eef2ff;  
+            --success: #10b981;  
+            --success-light: #d1fae5;  
+            --success-dark: #059669;  
+            --warning: #f59e0b;  
+            --warning-light: #fef3c7;  
+            --warning-dark: #d97706;  
+            --danger: #ef4444;  
+            --danger-light: #fee2e2;  
+            --danger-dark: #dc2626;  
+            --info: #3b82f6;  
+            --info-light: #dbeafe;  
+            --info-dark: #2563eb;  
+            --purple: #8b5cf6;  
+            --purple-light: #ede9fe;  
+            --pink: #ec4899;  
+            --pink-light: #fce7f3;  
+            --orange: #f97316;  
+            --orange-light: #ffedd5;  
+            --teal: #14b8a6;  
+            --teal-light: #ccfbf1;  
+            --gray-50: #f9fafb;  
+            --gray-100: #f3f4f6;  
+            --gray-200: #e5e7eb;  
+            --gray-300: #d1d5db;  
+            --gray-400: #9ca3af;  
+            --gray-500: #6b7280;  
+            --gray-600: #4b5563;  
+            --gray-700: #374151;  
+            --gray-800: #1f2937;  
+            --gray-900: #111827;  
+            --bg: #f0f2f5;  
+            --card-bg: #ffffff;  
+            --sidebar-bg: #1e1b4b;  
+            --sidebar-text: rgba(255,255,255,0.7);  
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);  
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);  
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);  
+            --shadow-xl: 0 20px 50px rgba(0,0,0,0.15);  
+            --radius-sm: 8px;  
+            --radius-md: 12px;  
+            --radius-lg: 16px;  
+            --radius-xl: 20px;  
+        }  
+  
+        * { margin: 0; padding: 0; box-sizing: border-box; }  
+  
+        body {  
+            font-family: 'Inter', sans-serif;  
+            background: var(--bg);  
+            color: var(--gray-800);  
+            overflow-x: hidden;  
+        }  
+  
+        /* ===== LAYOUT ===== */  
+        .app-container {  
+            display: flex;  
+            min-height: 100vh;  
+        }  
+  
+        /* ===== SIDEBAR ===== */  
+        .sidebar {  
+            width: 260px;  
+            background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            height: 100vh;  
+            z-index: 100;  
+            display: flex;  
+            flex-direction: column;  
+            transition: all 0.3s ease;  
+            overflow-y: auto;  
+        }  
+  
+        .sidebar-header {  
+            padding: 24px 22px;  
+            border-bottom: 1px solid rgba(255,255,255,0.08);  
+        }  
+  
+        .sidebar-logo {  
+            display: flex;  
+            align-items: center;  
+            gap: 12px;  
+        }  
+  
+        .logo-icon {  
+            width: 42px;  
+            height: 42px;  
+            background: linear-gradient(135deg, var(--primary), var(--purple));  
+            border-radius: 12px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 20px;  
+            box-shadow: 0 4px 15px rgba(99,102,241,0.4);  
+        }  
+  
+        .logo-text h3 {  
+            color: white;  
+            font-size: 16px;  
+            font-weight: 800;  
+        }  
+  
+        .logo-text p {  
+            color: rgba(255,255,255,0.5);  
+            font-size: 10px;  
+            font-weight: 500;  
+            letter-spacing: 1px;  
+            text-transform: uppercase;  
+        }  
+  
+        .sidebar-nav {  
+            padding: 20px 14px;  
+            flex: 1;  
+        }  
+  
+        .nav-label {  
+            color: rgba(255,255,255,0.35);  
+            font-size: 10px;  
+            font-weight: 700;  
+            text-transform: uppercase;  
+            letter-spacing: 1.5px;  
+            padding: 0 10px;  
+            margin-bottom: 10px;  
+            margin-top: 20px;  
+        }  
+  
+        .nav-label:first-child { margin-top: 0; }  
+  
+        .nav-item {  
+            display: flex;  
+            align-items: center;  
+            gap: 12px;  
+            padding: 11px 14px;  
+            border-radius: 10px;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+            margin-bottom: 2px;  
+            color: var(--sidebar-text);  
+            font-size: 13.5px;  
+            font-weight: 500;  
+        }  
+  
+        .nav-item:hover {  
+            background: rgba(255,255,255,0.08);  
+            color: white;  
+        }  
+  
+        .nav-item.active {  
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));  
+            color: white;  
+            box-shadow: 0 4px 15px rgba(99,102,241,0.3);  
+        }  
+  
+        .nav-item .nav-icon { font-size: 18px; width: 22px; text-align: center; }  
+  
+        .nav-item .nav-badge {  
+            margin-left: auto;  
+            background: rgba(255,255,255,0.15);  
+            color: white;  
+            padding: 2px 8px;  
+            border-radius: 20px;  
+            font-size: 11px;  
+            font-weight: 700;  
+        }  
+  
+        .nav-item.active .nav-badge {  
+            background: rgba(255,255,255,0.25);  
+        }  
+  
+        .sidebar-footer {  
+            padding: 18px 22px;  
+            border-top: 1px solid rgba(255,255,255,0.08);  
+        }  
+  
+        .user-card {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+        }  
+  
+        .user-avatar {  
+            width: 36px;  
+            height: 36px;  
+            background: linear-gradient(135deg, var(--orange), var(--pink));  
+            border-radius: 10px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 14px;  
+            font-weight: 800;  
+            color: white;  
+        }  
+  
+        .user-info h4 {  
+            color: white;  
+            font-size: 13px;  
+            font-weight: 600;  
+        }  
+  
+        .user-info p {  
+            color: rgba(255,255,255,0.5);  
+            font-size: 11px;  
+        }  
+  
+        /* ===== SYSTEM STATUS PANEL ===== */  
+        .status-panel {  
+            margin-top: 16px;  
+            padding: 14px;  
+            background: rgba(0,0,0,0.2);  
+            border-radius: 10px;  
+            border: 1px solid rgba(255,255,255,0.08);  
+        }  
+  
+        .status-title {  
+            font-size: 11px;  
+            font-weight: 600;  
+            color: rgba(255,255,255,0.7);  
+            margin-bottom: 10px;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .status-item {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+            padding: 6px 0;  
+            font-size: 12px;  
+        }  
+  
+        .status-indicator {  
+            width: 10px;  
+            height: 10px;  
+            border-radius: 50%;  
+            background: #6b7280;  
+            border: 2px solid rgba(255,255,255,0.2);  
+            transition: all 0.3s ease;  
+            flex-shrink: 0;  
+        }  
+  
+        .status-indicator.online {  
+            background: #10b981;  
+            border-color: #10b981;  
+            box-shadow: 0 0 8px rgba(16,185,129,0.5);  
+        }  
+  
+        .status-indicator.offline {  
+            background: #ef4444;  
+            border-color: #ef4444;  
+            box-shadow: 0 0 8px rgba(239,68,68,0.5);  
+        }  
+  
+        .status-indicator.checking {  
+            background: #f59e0b;  
+            border-color: #f59e0b;  
+            animation: pulse 1.5s infinite;  
+        }  
+  
+        @keyframes pulse {  
+            0%, 100% { opacity: 1; }  
+            50% { opacity: 0.5; }  
+        }  
+  
+        .status-label {  
+            color: rgba(255,255,255,0.8);  
+            font-weight: 500;  
+            min-width: 60px;  
+        }  
+  
+        .status-text {  
+            color: rgba(255,255,255,0.5);  
+            font-size: 11px;  
+            margin-left: auto;  
+        }  
+  
+        /* ===== SYNC SECTION ===== */  
+        .sync-section {  
+            margin-top: 16px;  
+            padding: 14px;  
+            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(59,130,246,0.1));  
+            border-radius: 10px;  
+            border: 1px solid rgba(16,185,129,0.2);  
+        }  
+  
+        .sync-section.has-pending {  
+            background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));  
+            border-color: rgba(245,158,11,0.3);  
+            animation: glow 2s infinite;  
+        }  
+  
+        @keyframes glow {  
+            0%, 100% { box-shadow: 0 0 5px rgba(245,158,11,0.3); }  
+            50% { box-shadow: 0 0 15px rgba(245,158,11,0.5); }  
+        }  
+  
+        .sync-header {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            margin-bottom: 8px;  
+            font-size: 12px;  
+            font-weight: 600;  
+            color: rgba(255,255,255,0.9);  
+        }  
+  
+        .sync-badge {  
+            background: #ef4444;  
+            color: white;  
+            font-size: 10px;  
+            font-weight: 700;  
+            padding: 2px 6px;  
+            border-radius: 10px;  
+            min-width: 18px;  
+            text-align: center;  
+        }  
+  
+        .sync-badge.hidden {  
+            display: none;  
+        }  
+  
+        .sync-info {  
+            font-size: 11px;  
+            color: rgba(255,255,255,0.6);  
+            margin-bottom: 10px;  
+        }  
+  
+        .sync-btn {  
+            width: 100%;  
+            padding: 8px 12px;  
+            background: linear-gradient(135deg, #10b981, #059669);  
+            color: white;  
+            border: none;  
+            border-radius: 6px;  
+            font-size: 12px;  
+            font-weight: 600;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 6px;  
+        }  
+  
+        .sync-btn:hover:not(:disabled) {  
+            background: linear-gradient(135deg, #059669, #047857);  
+            transform: translateY(-1px);  
+        }  
+  
+        .sync-btn:disabled {  
+            background: rgba(255,255,255,0.1);  
+            color: rgba(255,255,255,0.4);  
+            cursor: not-allowed;  
+        }  
+  
+        .sync-btn.syncing {  
+            background: linear-gradient(135deg, #f59e0b, #d97706);  
+            animation: pulse 1.5s infinite;  
+        }  
+  
+        .sync-status {  
+            margin-top: 8px;  
+            font-size: 11px;  
+            text-align: center;  
+            min-height: 16px;  
+        }  
+  
+        .sync-status.success {  
+            color: #10b981;  
+        }  
+  
+        .sync-status.error {  
+            color: #ef4444;  
+        }  
+  
+        /* ===== MAIN CONTENT ===== */  
+        .main-content {  
+            margin-left: 260px;  
+            flex: 1;  
+            min-height: 100vh;  
+        }  
+  
+        /* ===== TOP BAR ===== */  
+        .topbar {  
+            background: var(--card-bg);  
+            padding: 16px 30px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            border-bottom: 1px solid var(--gray-200);  
+            position: sticky;  
+            top: 0;  
+            z-index: 50;  
+        }  
+  
+        .topbar-left {  
+            display: flex;  
+            align-items: center;  
+            gap: 20px;  
+        }  
+  
+        .topbar-left h1 {  
+            font-size: 22px;  
+            font-weight: 800;  
+            color: var(--gray-900);  
+        }  
+  
+        .topbar-left .date-badge {  
+            background: var(--primary-bg);  
+            color: var(--primary);  
+            padding: 6px 14px;  
+            border-radius: 8px;  
+            font-size: 12px;  
+            font-weight: 600;  
+        }  
+  
+        .topbar-right {  
+            display: flex;  
+            align-items: center;  
+            gap: 12px;  
+        }  
+  
+        .search-box {  
+            display: flex;  
+            align-items: center;  
+            background: var(--gray-100);  
+            border-radius: 10px;  
+            padding: 8px 14px;  
+            gap: 8px;  
+            width: 260px;  
+        }  
+  
+        .search-box input {  
+            border: none;  
+            background: none;  
+            outline: none;  
+            font-size: 13px;  
+            color: var(--gray-700);  
+            width: 100%;  
+            font-family: 'Inter', sans-serif;  
+        }  
+  
+        .search-box input::placeholder {  
+            color: var(--gray-400);  
+        }  
+  
+        .icon-btn {  
+            width: 38px;  
+            height: 38px;  
+            border-radius: 10px;  
+            border: 1px solid var(--gray-200);  
+            background: white;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            cursor: pointer;  
+            font-size: 16px;  
+            transition: all 0.2s;  
+            position: relative;  
+        }  
+  
+        .icon-btn:hover {  
+            background: var(--gray-100);  
+            border-color: var(--gray-300);  
+        }  
+  
+        .icon-btn .notif-dot {  
+            position: absolute;  
+            top: 6px;  
+            right: 6px;  
+            width: 8px;  
+            height: 8px;  
+            background: var(--danger);  
+            border-radius: 50%;  
+            border: 2px solid white;  
+        }  
+  
+        .btn {  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 8px;  
+            padding: 9px 18px;  
+            border-radius: 10px;  
+            font-size: 13px;  
+            font-weight: 600;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+            border: none;  
+            font-family: 'Inter', sans-serif;  
+        }  
+  
+        .btn-primary {  
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));  
+            color: white;  
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);  
+        }  
+  
+        .btn-primary:hover {  
+            box-shadow: 0 6px 20px rgba(99,102,241,0.4);  
+            transform: translateY(-1px);  
+        }  
+  
+        .btn-secondary {  
+            background: var(--gray-100);  
+            color: var(--gray-700);  
+            border: 1px solid var(--gray-200);  
+        }  
+  
+        .btn-secondary:hover {  
+            background: var(--gray-200);  
+        }  
+  
+        .btn-success {  
+            background: linear-gradient(135deg, var(--success), var(--success-dark));  
+            color: white;  
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);  
+        }  
+  
+        .btn-danger {  
+            background: linear-gradient(135deg, var(--danger), var(--danger-dark));  
+            color: white;  
+        }  
+  
+        .btn-sm {  
+            padding: 6px 12px;  
+            font-size: 12px;  
+            border-radius: 8px;  
+        }  
+  
+        /* ===== PAGE CONTENT ===== */  
+        .page-content {  
+            padding: 25px 30px;  
+        }  
+  
+        /* View toggle */  
+        .view-controls {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            margin-bottom: 24px;  
+            flex-wrap: wrap;  
+            gap: 12px;  
+        }  
+  
+        .view-tabs {  
+            display: flex;  
+            background: var(--card-bg);  
+            border-radius: 12px;  
+            padding: 4px;  
+            box-shadow: var(--shadow-sm);  
+            border: 1px solid var(--gray-200);  
+        }  
+  
+        .view-tab {  
+            padding: 8px 18px;  
+            border-radius: 9px;  
+            cursor: pointer;  
+            font-size: 13px;  
+            font-weight: 600;  
+            color: var(--gray-500);  
+            transition: all 0.2s;  
+            display: flex;  
+            align-items: center;  
+            gap: 6px;  
+        }  
+  
+        .view-tab:hover { color: var(--gray-700); }  
+  
+        .view-tab.active {  
+            background: var(--primary);  
+            color: white;  
+            box-shadow: 0 2px 8px rgba(99,102,241,0.3);  
+        }  
+  
+        .filter-group {  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+        }  
+  
+        .filter-select {  
+            padding: 8px 14px;  
+            border-radius: 10px;  
+            border: 1px solid var(--gray-200);  
+            background: white;  
+            font-size: 13px;  
+            font-family: 'Inter', sans-serif;  
+            color: var(--gray-700);  
+            cursor: pointer;  
+            outline: none;  
+        }  
+  
+        .filter-select:focus {  
+            border-color: var(--primary);  
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);  
+        }  
+  
+        /* ===== STATS CARDS ===== */  
+        .stats-grid {  
+            display: grid;  
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+            gap: 16px;  
+            margin-bottom: 28px;  
+        }  
+  
+        .stat-card {  
+            background: var(--card-bg);  
+            border-radius: var(--radius-lg);  
+            padding: 22px 24px;  
+            box-shadow: var(--shadow-sm);  
+            border: 1px solid var(--gray-200);  
+            display: flex;  
+            align-items: flex-start;  
+            justify-content: space-between;  
+            transition: all 0.3s;  
+            cursor: pointer;  
+        }  
+  
+        .stat-card:hover {  
+            box-shadow: var(--shadow-md);  
+            transform: translateY(-2px);  
+        }  
+  
+        .stat-info h4 {  
+            font-size: 11px;  
+            font-weight: 600;  
+            text-transform: uppercase;  
+            letter-spacing: 1px;  
+            color: var(--gray-500);  
+            margin-bottom: 6px;  
+        }  
+  
+        .stat-info .stat-number {  
+            font-size: 30px;  
+            font-weight: 900;  
+            line-height: 1;  
+            margin-bottom: 6px;  
+        }  
+  
+        .stat-info .stat-change {  
+            font-size: 11px;  
+            font-weight: 600;  
+            display: flex;  
+            align-items: center;  
+            gap: 4px;  
+        }  
+  
+        .stat-change.up { color: var(--success); }  
+        .stat-change.down { color: var(--danger); }  
+  
+        .stat-icon {  
+            width: 48px;  
+            height: 48px;  
+            border-radius: 14px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 22px;  
+        }  
+  
+        .stat-card.total .stat-number { color: var(--primary); }  
+        .stat-card.total .stat-icon { background: var(--primary-bg); }  
+  
+        .stat-card.progress .stat-number { color: var(--warning); }  
+        .stat-card.progress .stat-icon { background: var(--warning-light); }  
+  
+        .stat-card.review .stat-number { color: var(--purple); }  
+        .stat-card.review .stat-icon { background: var(--purple-light); }  
+  
+        .stat-card.done .stat-number { color: var(--success); }  
+        .stat-card.done .stat-icon { background: var(--success-light); }  
+  
+        .stat-card.blocked .stat-number { color: var(--danger); }  
+        .stat-card.blocked .stat-icon { background: var(--danger-light); }  
+  
+        .stat-card.bugs .stat-number { color: var(--orange); }  
+        .stat-card.bugs .stat-icon { background: var(--orange-light); }  
+
+        .stat-card.deprecated .stat-number { color: var(--gray-500); }
+        .stat-card.deprecated .stat-icon { background: var(--gray-200); }
+  
+        .stat-card.deployed .stat-number { color: #0ea5e9; }
+        .stat-card.deployed .stat-icon { background: #e0f2fe; }
+  
+        .stat-card.rollbacked .stat-number { color: #f43f5e; }
+        .stat-card.rollbacked .stat-icon { background: #ffe4e6; }
+  
+        .stat-card.assigned .stat-number { color: #14b8a6; }
+        .stat-card.assigned .stat-icon { background: #ccfbf1; }
+  
+        /* ===== DESIGN 1: KANBAN BOARD ===== */  
+        .kanban-board {  
+            display: grid;  
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));  
+            gap: 18px;  
+            align-items: flex-start;  
+        }  
+  
+        .kanban-column {  
+            background: var(--gray-100);  
+            border-radius: var(--radius-lg);  
+            padding: 16px;  
+            min-height: 400px;  
+        }  
+  
+        .column-header {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            margin-bottom: 16px;  
+            padding-bottom: 12px;  
+            border-bottom: 2px solid var(--gray-200);  
+        }  
+  
+        .column-header-left {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+        }  
+  
+        .column-dot {  
+            width: 10px;  
+            height: 10px;  
+            border-radius: 50%;  
+        }  
+  
+        .column-header h3 {  
+            font-size: 14px;  
+            font-weight: 700;  
+            color: var(--gray-800);  
+        }  
+  
+        .column-count {  
+            background: var(--gray-200);  
+            color: var(--gray-600);  
+            padding: 2px 10px;  
+            border-radius: 20px;  
+            font-size: 12px;  
+            font-weight: 700;  
+        }  
+  
+        .task-card {  
+            background: var(--card-bg);  
+            border-radius: var(--radius-md);  
+            padding: 16px;  
+            margin-bottom: 10px;  
+            box-shadow: var(--shadow-sm);  
+            border: 1px solid var(--gray-200);  
+            cursor: pointer;  
+            transition: all 0.2s;  
+        }  
+  
+        .task-card:hover {  
+            box-shadow: var(--shadow-md);  
+            transform: translateY(-2px);  
+        }  
+  
+        .task-card-top {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            margin-bottom: 10px;  
+        }  
+  
+        .task-id {  
+            font-size: 11px;  
+            font-weight: 700;  
+            color: var(--gray-400);  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .task-priority {  
+            padding: 3px 10px;  
+            border-radius: 6px;  
+            font-size: 10px;  
+            font-weight: 700;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .priority-critical { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }  
+        .priority-high { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }  
+        .priority-medium { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }  
+        .priority-low { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }  
+  
+        .task-card h4 {  
+            font-size: 14px;  
+            font-weight: 600;  
+            color: var(--gray-800);  
+            margin-bottom: 6px;  
+            line-height: 1.4;  
+        }  
+  
+        .task-card p {  
+            font-size: 12px;  
+            color: var(--gray-500);  
+            line-height: 1.5;  
+            margin-bottom: 12px;  
+        }  
+  
+        .task-tags {  
+            display: flex;  
+            flex-wrap: wrap;  
+            gap: 5px;  
+            margin-bottom: 12px;  
+        }  
+  
+        .task-tag {  
+            padding: 3px 8px;  
+            border-radius: 5px;  
+            font-size: 10px;  
+            font-weight: 600;  
+        }  
+  
+        .tag-bug { background: #fee2e2; color: #dc2626; }  
+        .tag-feature { background: #dbeafe; color: #2563eb; }  
+        .tag-regression { background: #fce7f3; color: #db2777; }  
+        .tag-automation { background: #ede9fe; color: #7c3aed; }  
+        .tag-manual { background: #ccfbf1; color: #0d9488; }  
+        .tag-api { background: #fff7ed; color: #ea580c; }  
+        .tag-ui { background: #fefce8; color: #ca8a04; }  
+        .tag-performance { background: #f0fdf4; color: #16a34a; }  
+  
+        .task-card-bottom {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            padding-top: 10px;  
+            border-top: 1px solid var(--gray-100);  
+        }  
+  
+        .task-assignee {  
+            display: flex;  
+            align-items: center;  
+            gap: 6px;  
+        }  
+  
+        .assignee-avatar {  
+            width: 26px;  
+            height: 26px;  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 10px;  
+            font-weight: 700;  
+            color: white;  
+            border: 2px solid white;  
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);  
+        }  
+  
+        .task-assignee-multi {  
+            display: flex;  
+            align-items: center;  
+        }  
+  
+        .task-assignee-multi .assignee-avatar {  
+            margin-left: -6px;  
+        }  
+  
+        .task-assignee-multi .assignee-avatar:first-child {  
+            margin-left: 0;  
+        }  
+  
+        .task-assignee span {  
+            font-size: 11px;  
+            color: var(--gray-500);  
+            font-weight: 500;  
+        }  
+  
+        .task-assignee-multi {  
+            display: flex;  
+            align-items: center;  
+            gap: 4px;  
+            flex-wrap: wrap;  
+        }  
+  
+        .task-assignee-multi .assignee-avatar {  
+            border: 2px solid white;  
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);  
+        }  
+  
+        .task-card .task-assignee-multi {  
+            max-width: 150px;  
+        }  
+  
+        .task-meta {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+        }  
+  
+        .task-meta-item {  
+            display: flex;  
+            align-items: center;  
+            gap: 3px;  
+            font-size: 11px;  
+            color: var(--gray-400);  
+        }  
+  
+        .task-card .task-actions {  
+            display: none;  
+            position: absolute;  
+            top: 8px;  
+            right: 8px;  
+            gap: 4px;  
+        }  
+  
+        .task-card { position: relative; }  
+  
+        .task-card:hover .task-actions { display: flex; }  
+  
+        .task-action-btn {  
+            width: 28px;  
+            height: 28px;  
+            border-radius: 6px;  
+            border: none;  
+            cursor: pointer;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 13px;  
+            transition: all 0.2s;  
+        }  
+  
+        .task-action-btn.edit {  
+            background: var(--info-light);  
+            color: var(--info);  
+        }  
+  
+        .task-action-btn.delete {  
+            background: var(--danger-light);  
+            color: var(--danger);  
+        }  
+  
+        .task-action-btn:hover { transform: scale(1.1); }  
+  
+        /* ===== DESIGN 2: TABLE VIEW ===== */  
+        .table-view {  
+            background: var(--card-bg);  
+            border-radius: var(--radius-lg);  
+            box-shadow: var(--shadow-sm);  
+            border: 1px solid var(--gray-200);  
+            overflow: hidden;  
+        }  
+  
+        .task-table {  
+            width: 100%;  
+            border-collapse: collapse;  
+        }  
+  
+        .task-table thead th {  
+            background: var(--gray-50);  
+            padding: 14px 18px;  
+            text-align: left;  
+            font-size: 11px;  
+            font-weight: 700;  
+            text-transform: uppercase;  
+            letter-spacing: 1px;  
+            color: var(--gray-500);  
+            border-bottom: 2px solid var(--gray-200);  
+            position: sticky;  
+            top: 0;  
+        }  
+  
+        .task-table tbody td {  
+            padding: 14px 18px;  
+            font-size: 13px;  
+            border-bottom: 1px solid var(--gray-100);  
+            vertical-align: middle;  
+        }  
+  
+        .task-table tbody tr {  
+            transition: background 0.2s;  
+            cursor: pointer;  
+        }  
+  
+        .task-table tbody tr:hover {  
+            background: var(--gray-50);  
+        }  
+  
+        .table-task-name {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+        }  
+  
+        .table-task-name .checkbox {  
+            width: 18px;  
+            height: 18px;  
+            border: 2px solid var(--gray-300);  
+            border-radius: 5px;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            flex-shrink: 0;  
+        }  
+  
+        .table-task-name .checkbox.checked {  
+            background: var(--success);  
+            border-color: var(--success);  
+        }  
+  
+        .table-task-name .checkbox.checked::after {  
+            content: '✓';  
+            color: white;  
+            font-size: 12px;  
+            font-weight: 700;  
+        }  
+  
+        .status-badge {  
+            padding: 4px 12px;  
+            border-radius: 20px;  
+            font-size: 11px;  
+            font-weight: 700;  
+            display: inline-flex;  
+            align-items: center;  
+            gap: 5px;  
+            white-space: nowrap;  
+        }  
+  
+        .status-badge::before {  
+            content: '';  
+            width: 6px;  
+            height: 6px;  
+            border-radius: 50%;  
+        }  
+  
+        .status-unassigned { background: #ede9fe; color: #7c3aed; }
+        .status-unassigned::before { background: #7c3aed; }
+        .status-assigned { background: #ccfbf1; color: #0f766e; }
+        .status-assigned::before { background: #14b8a6; }
+        .status-in-progress { background: #fef3c7; color: #b45309; }
+        .status-in-progress::before { background: #b45309; }
+        .status-uat-completed { background: #d1fae5; color: #059669; }
+        .status-uat-completed::before { background: #059669; }
+        .status-overdue { background: #fee2e2; color: #dc2626; }
+        .status-overdue::before { background: #dc2626; }
+        .status-deprecated { background: #f3f4f6; color: #6b7280; }
+        .status-deprecated::before { background: #6b7280; }
+        .status-blocked { background: #fee2e2; color: #dc2626; }
+        .status-blocked::before { background: #dc2626; }
+        .status-deployed { background: #e0f2fe; color: #0369a1; }
+        .status-deployed::before { background: #0ea5e9; }
+        .status-rollbacked { background: #ffe4e6; color: #be123c; }
+        .status-rollbacked::before { background: #f43f5e; }
+        .table-actions {  
+            display: flex;  
+            gap: 6px;  
+        }  
+  
+        /* ===== DESIGN 3: LIST / TIMELINE VIEW ===== */  
+        .list-view {  
+            display: flex;  
+            flex-direction: column;  
+            gap: 12px;  
+        }  
+  
+        .list-card {  
+            background: var(--card-bg);  
+            border-radius: var(--radius-md);  
+            padding: 20px 24px;  
+            box-shadow: var(--shadow-sm);  
+            border: 1px solid var(--gray-200);  
+            display: flex;  
+            align-items: center;  
+            gap: 20px;  
+            transition: all 0.2s;  
+            cursor: pointer;  
+        }  
+  
+        .list-card:hover {  
+            box-shadow: var(--shadow-md);  
+            border-color: var(--primary-light);  
+        }  
+  
+        .list-card .list-priority-bar {  
+            width: 4px;  
+            height: 50px;  
+            border-radius: 4px;  
+            flex-shrink: 0;  
+        }  
+  
+        .list-card .list-checkbox {  
+            width: 22px;  
+            height: 22px;  
+            border: 2px solid var(--gray-300);  
+            border-radius: 6px;  
+            flex-shrink: 0;  
+            cursor: pointer;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            transition: all 0.2s;  
+        }  
+  
+        .list-card .list-checkbox.done {  
+            background: var(--success);  
+            border-color: var(--success);  
+        }  
+  
+        .list-card .list-checkbox.done::after {  
+            content: '✓';  
+            color: white;  
+            font-size: 13px;  
+            font-weight: 800;  
+        }  
+  
+        .list-card-content {  
+            flex: 1;  
+        }  
+  
+        .list-card-content h4 {  
+            font-size: 15px;  
+            font-weight: 700;  
+            color: var(--gray-800);  
+            margin-bottom: 4px;  
+        }  
+  
+        .list-card-content .list-desc {  
+            font-size: 12px;  
+            color: var(--gray-500);  
+            margin-bottom: 8px;  
+        }  
+  
+        .list-card-meta {  
+            display: flex;  
+            align-items: center;  
+            gap: 14px;  
+        }  
+  
+        .list-card-right {  
+            display: flex;  
+            align-items: center;  
+            gap: 12px;  
+            flex-shrink: 0;  
+        }  
+  
+        .due-date {  
+            font-size: 12px;  
+            color: var(--gray-500);  
+            font-weight: 500;  
+            display: flex;  
+            align-items: center;  
+            gap: 4px;  
+        }  
+  
+        .due-date.overdue {  
+            color: var(--danger);  
+            font-weight: 700;  
+        }  
+  
+        /* ===== MODAL ===== */  
+        .modal-overlay {  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            right: 0;  
+            bottom: 0;  
+            background: rgba(0,0,0,0.5);  
+            backdrop-filter: blur(4px);  
+            z-index: 1000;  
+            display: none;  
+            align-items: center;  
+            justify-content: center;  
+            padding: 20px;  
+        }  
+  
+        .modal-overlay.active { display: flex; }  
+  
+        .modal {  
+            background: var(--card-bg);  
+            border-radius: var(--radius-xl);  
+            width: 100%;  
+            max-width: 600px;  
+            max-height: 90vh;  
+            overflow-y: auto;  
+            box-shadow: var(--shadow-xl);  
+            animation: modalSlideIn 0.3s ease;  
+        }  
+  
+        @keyframes modalSlideIn {  
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }  
+            to { opacity: 1; transform: translateY(0) scale(1); }  
+        }  
+  
+        .modal-header {  
+            padding: 24px 28px 0;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+        }  
+  
+        .modal-header h2 {  
+            font-size: 20px;  
+            font-weight: 800;  
+            color: var(--gray-900);  
+        }  
+  
+        .modal-close {  
+            width: 36px;  
+            height: 36px;  
+            border-radius: 10px;  
+            border: 1px solid var(--gray-200);  
+            background: white;  
+            cursor: pointer;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 18px;  
+            transition: all 0.2s;  
+        }  
+  
+        .modal-close:hover {  
+            background: var(--danger-light);  
+            border-color: var(--danger);  
+            color: var(--danger);  
+        }  
+  
+        .modal-body {  
+            padding: 24px 28px;  
+        }  
+  
+        .form-group {  
+            margin-bottom: 18px;  
+        }  
+  
+        .form-group label {  
+            display: block;  
+            font-size: 12px;  
+            font-weight: 700;  
+            color: var(--gray-700);  
+            margin-bottom: 6px;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .form-group label .required {  
+            color: var(--danger);  
+        }  
+  
+        .form-input {  
+            width: 100%;  
+            padding: 10px 14px;  
+            border: 1.5px solid var(--gray-200);  
+            border-radius: 10px;  
+            font-size: 14px;  
+            font-family: 'Inter', sans-serif;  
+            color: var(--gray-800);  
+            transition: all 0.2s;  
+            background: white;  
+        }  
+  
+        .form-input:focus {  
+            border-color: var(--primary);  
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);  
+            outline: none;  
+        }  
+  
+        textarea.form-input { resize: vertical; min-height: 80px; }  
+  
+        /* ===== CHECKBOX DROPDOWN ===== */  
+        .checkbox-dropdown {  
+            position: relative;  
+            width: 100%;  
+        }  
+  
+        .checkbox-dropdown-header {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            padding: 10px 14px;  
+            background: white;  
+            border: 1.5px solid var(--gray-200);  
+            border-radius: 10px;  
+            cursor: pointer;  
+            font-size: 14px;  
+            color: var(--gray-700);  
+            transition: all 0.2s;  
+        }  
+  
+        .checkbox-dropdown-header:hover {  
+            border-color: var(--primary);  
+        }  
+  
+        .checkbox-dropdown-header.active {  
+            border-color: var(--primary);  
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);  
+            border-bottom-left-radius: 0;  
+            border-bottom-right-radius: 0;  
+        }  
+  
+        .dropdown-arrow {  
+            font-size: 10px;  
+            color: var(--gray-500);  
+            transition: transform 0.2s;  
+        }  
+  
+        .checkbox-dropdown-header.active .dropdown-arrow {  
+            transform: rotate(180deg);  
+        }  
+  
+        .checkbox-dropdown-content {  
+            display: none;  
+            position: absolute;  
+            top: 100%;  
+            left: 0;  
+            right: 0;  
+            background: white;  
+            border: 1.5px solid var(--primary);  
+            border-top: none;  
+            border-radius: 0 0 10px 10px;  
+            z-index: 1000;  
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);  
+        }  
+  
+        .checkbox-dropdown-content.show {  
+            display: block;  
+        }  
+  
+        .checkbox-item {  
+            display: flex !important;  
+            flex-direction: row !important;  
+            align-items: center !important;  
+            justify-content: flex-start;  
+            padding: 6px 12px;  
+            cursor: pointer;  
+            transition: background 0.15s;  
+            gap: 8px;  
+            white-space: nowrap;  
+            flex-wrap: nowrap;  
+        }  
+  
+        .checkbox-item:hover {  
+            background: var(--gray-50);  
+        }  
+  
+        .checkbox-item input[type="checkbox"] {  
+            display: none;  
+        }  
+  
+        .checkbox-item .checkmark {  
+            width: 18px;  
+            height: 18px;  
+            border: 2px solid var(--gray-300);  
+            border-radius: 4px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            transition: all 0.15s;  
+            flex-shrink: 0;  
+        }  
+  
+        .checkbox-item input[type="checkbox"]:checked + .checkmark {  
+            background: var(--primary);  
+            border-color: var(--primary);  
+        }  
+  
+        .checkbox-item input[type="checkbox"]:checked + .checkmark::after {  
+            content: '✓';  
+            color: white;  
+            font-size: 12px;  
+            font-weight: bold;  
+        }  
+  
+        .checkbox-item .assignee-name {  
+            flex: 1;  
+            font-size: 14px;  
+            color: var(--gray-700);  
+        }  
+  
+        .checkbox-item .assignee-color {  
+            width: 12px;  
+            height: 12px;  
+            border-radius: 50%;  
+            flex-shrink: 0;  
+        }  
+  
+        .checkbox-divider {  
+            height: 1px;  
+            background: var(--gray-200);  
+            margin: 4px 12px;  
+        }  
+  
+        .filter-checkbox-dropdown {  
+            position: relative;  
+        }  
+  
+        .filter-checkbox-dropdown .checkbox-dropdown-header {  
+            padding: 8px 12px;  
+            font-size: 13px;  
+            border: 1px solid var(--gray-200);  
+            border-radius: 10px;  
+            background: white;  
+        }  
+  
+        .filter-checkbox-dropdown .checkbox-dropdown-content {  
+            min-width: 180px;  
+        }  
+  
+        .form-row {  
+            display: grid;  
+            grid-template-columns: 1fr 1fr;  
+            gap: 14px;  
+        }  
+  
+        .modal-footer {  
+            padding: 0 28px 24px;  
+            display: flex;  
+            gap: 10px;  
+            justify-content: flex-end;  
+        }  
+  
+        /* ===== VIEW CONTAINERS ===== */  
+        .view-container { display: none; }  
+        .view-container.active { display: block; }  
+  
+        /* ===== EMPTY STATE ===== */  
+        .empty-state {  
+            text-align: center;  
+            padding: 60px 20px;  
+        }  
+  
+        .empty-state .empty-icon {  
+            font-size: 60px;  
+            margin-bottom: 16px;  
+        }  
+  
+        .empty-state h3 {  
+            font-size: 18px;  
+            font-weight: 700;  
+            color: var(--gray-700);  
+            margin-bottom: 6px;  
+        }  
+  
+        .empty-state p {  
+            font-size: 14px;  
+            color: var(--gray-400);  
+        }  
+  
+        /* ===== PROGRESS BAR ===== */  
+        .progress-bar-container {  
+            background: var(--gray-200);  
+            border-radius: 10px;  
+            height: 8px;  
+            overflow: hidden;  
+            margin-top: 4px;  
+        }  
+  
+        .progress-bar {  
+            height: 100%;  
+            border-radius: 10px;  
+            transition: width 0.5s ease;  
+        }  
+  
+  
+        /* Drag and Drop Styles */
+        .task-card {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+        }
+        
+        .task-card:active {
+            cursor: grabbing;
+        }
+        
+        .task-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg) scale(0.98);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: grabbing;
+        }
+        
+        .kanban-column {
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+        }
+        
+        .kanban-column.drop-target {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border: 2px dashed var(--primary);
+        }
+        
+        .kanban-column.drop-active {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            transform: scale(1.01);
+        }
+        
+        .kanban-column.drop-active .column-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            margin: -8px -8px 15px -8px;
+            padding: 12px 14px;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+        }
+        
+        .kanban-column.drop-active .column-header h3 {
+            color: white;
+        }
+        
+        .kanban-column.drop-active .column-dot {
+            background: white !important;
+        }
+        
+        .column-content {
+            min-height: 100px;
+        }
+        /* Scrollbar */  
+        ::-webkit-scrollbar { width: 6px; }  
+        ::-webkit-scrollbar-track { background: transparent; }  
+        ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 10px; }  
+        ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }  
+  
+        /* Detail Modal */  
+        .detail-section {  
+            margin-bottom: 20px;  
+        }  
+  
+        .detail-section h5 {  
+            font-size: 11px;  
+            font-weight: 700;  
+            color: var(--gray-400);  
+            text-transform: uppercase;  
+            letter-spacing: 1px;  
+            margin-bottom: 8px;  
+        }  
+  
+        .activity-list {  
+            list-style: none;  
+        }  
+  
+        .activity-list li {  
+            padding: 8px 0;  
+            border-bottom: 1px solid var(--gray-100);  
+            font-size: 12px;  
+            color: var(--gray-600);  
+            display: flex;  
+            align-items: flex-start;  
+            gap: 8px;  
+        }  
+  
+        .activity-list li:last-child { border-bottom: none; }  
+  
+        .activity-time {  
+            color: var(--gray-400);  
+            font-size: 11px;  
+            white-space: nowrap;  
+        }  
+  
+        /* Quick Status change dropdown */  
+        .status-dropdown {  
+            position: relative;  
+            display: inline-block;  
+        }  
+  
+        .status-options {  
+            position: absolute;  
+            top: 100%;  
+            left: 0;  
+            background: white;  
+            border-radius: 10px;  
+            box-shadow: var(--shadow-lg);  
+            border: 1px solid var(--gray-200);  
+            padding: 6px;  
+            z-index: 200;  
+            min-width: 160px;  
+            display: none;  
+        }  
+  
+        .status-options.show { display: block; }  
+  
+        .status-option {  
+            padding: 8px 12px;  
+            border-radius: 7px;  
+            cursor: pointer;  
+            font-size: 12px;  
+            font-weight: 600;  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+            transition: background 0.15s;  
+        }  
+  
+        .status-option:hover { background: var(--gray-100); }  
+  
+        .status-option .s-dot {  
+            width: 8px;  
+            height: 8px;  
+            border-radius: 50%;  
+        }  
+  
+        /* Add card button in column */  
+        .add-card-btn {  
+            width: 100%;  
+            padding: 12px;  
+            border: 2px dashed var(--gray-300);  
+            border-radius: 10px;  
+            background: transparent;  
+            color: var(--gray-400);  
+            font-size: 13px;  
+            font-weight: 600;  
+            cursor: pointer;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 6px;  
+            transition: all 0.2s;  
+            font-family: 'Inter', sans-serif;  
+        }  
+  
+        .add-card-btn:hover {  
+            border-color: var(--primary);  
+            color: var(--primary);  
+            background: var(--primary-bg);  
+        }  
+  
+        /* Toast */  
+        .toast-container {  
+            position: fixed;  
+            top: 20px;  
+            right: 20px;  
+            z-index: 2000;  
+            display: flex;  
+            flex-direction: column;  
+            gap: 8px;  
+        }  
+  
+        .toast {  
+            background: var(--gray-900);  
+            color: white;  
+            padding: 14px 20px;  
+            border-radius: 12px;  
+            font-size: 13px;  
+            font-weight: 500;  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+            box-shadow: var(--shadow-lg);  
+            animation: toastIn 0.3s ease;  
+            min-width: 280px;  
+        }  
+  
+        .toast.success { border-left: 4px solid var(--success); }  
+        .toast.error { border-left: 4px solid var(--danger); }  
+        .toast.info { border-left: 4px solid var(--info); }  
+  
+        @keyframes toastIn {  
+            from { opacity: 0; transform: translateX(50px); }  
+            to { opacity: 1; transform: translateX(0); }  
+        }  
+  
+        @keyframes toastOut {  
+            from { opacity: 1; transform: translateX(0); }  
+            to { opacity: 0; transform: translateX(50px); }  
+        }  
+  
+        /* Responsive */  
+        @media (max-width: 1024px) {  
+            .sidebar { width: 70px; }  
+            .sidebar .logo-text,  
+            .sidebar .nav-label,  
+            .sidebar .nav-item span:not(.nav-icon),  
+            .sidebar .nav-badge,  
+            .sidebar .user-info { display: none; }  
+            .sidebar .nav-item { justify-content: center; padding: 12px; }  
+            .main-content { margin-left: 70px; }  
+            .kanban-board { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }  
+        }  
+  
+        @media (max-width: 768px) {  
+            .sidebar { display: none; }  
+            .main-content { margin-left: 0; }  
+            .topbar { padding: 12px 16px; }  
+            .page-content { padding: 16px; }  
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }  
+            .kanban-board { grid-template-columns: 1fr; }  
+            .form-row { grid-template-columns: 1fr; }  
+            .search-box { width: 180px; }  
+        }  
+    </style>  
+</head>  
+<body>  
+  
+<div class="app-container">  
+    <!-- ===== SIDEBAR ===== -->  
+    <aside class="sidebar">  
+        <div class="sidebar-header">  
+            <div class="sidebar-logo">  
+                <div class="logo-icon">🧪</div>  
+                <div class="logo-text">  
+                    <h3>QA Manager</h3>  
+                    <p>Task Management</p>  
+                </div>  
+            </div>  
+        </div>  
+  
+        <nav class="sidebar-nav">  
+            <div class="nav-label">Main Menu</div>  
+            <div class="nav-item active" onclick="switchPage('dashboard')">  
+                <span class="nav-icon">📊</span>  
+                <span>Dashboard</span>  
+            </div>  
+            <div class="nav-item" onclick="switchPage('dashboard')">  
+                <span class="nav-icon">📋</span>  
+                <span>All Tasks</span>  
+                <span class="nav-badge" id="nav-total-count">0</span>  
+            </div>  
+            <div class="nav-item" onclick="filterBySidebarStatus('In Progress')">  
+                <span class="nav-icon">🔄</span>  
+                <span>In Progress</span>  
+            </div>  
+            <div class="nav-item" onclick="filterBySidebarStatus('Unassigned')">  
+                <span class="nav-icon">🔍</span>  
+                <span>Unassigned</span>  
+            </div>  
+            <div class="nav-item" onclick="filterBySidebarStatus('Blocked')">  
+                <span class="nav-icon">🚫</span>  
+                <span>Blocked</span>  
+                <span class="nav-badge" id="nav-blocked-count">0</span>  
+            </div>  
+  
+            <div class="nav-label">Categories</div>  
+            <div class="nav-item" onclick="filterByTag('Bug')">  
+                <span class="nav-icon">🐛</span>  
+                <span>Bug Reports</span>  
+            </div>  
+            <div class="nav-item" onclick="filterByTag('Automation')">  
+                <span class="nav-icon">🤖</span>  
+                <span>Automation</span>  
+            </div>  
+            <div class="nav-item" onclick="filterByTag('API')">  
+                <span class="nav-icon">🔌</span>  
+                <span>API Testing</span>  
+            </div>  
+            <div class="nav-item" onclick="filterByTag('UI')">  
+                <span class="nav-icon">🎨</span>  
+                <span>UI Testing</span>  
+            </div>  
+  
+            <div class="nav-label">Reports</div>  
+            <div class="nav-item">  
+                <span class="nav-icon">📈</span>  
+                <span>Analytics</span>  
+            </div>  
+            <div class="nav-item">  
+                <span class="nav-icon">📄</span>  
+                <span>Daily Report</span>  
+            </div>  
+        </nav>  
+  
+        <div class="sidebar-footer">  
+            <div class="user-card">  
+                <div class="user-avatar">QM</div>  
+                <div class="user-info">  
+                    <h4>QA Manager</h4>  
+                    <p>Admin Access</p>  
+                </div>  
+            </div>  
+            <!-- System Status Panel -->  
+            <div class="status-panel">  
+                <div class="status-title">🔌 System Status</div>  
+                <div class="status-item" id="status-server">  
+                    <span class="status-indicator" id="indicator-server"></span>  
+                    <span class="status-label">Server</span>  
+                    <span class="status-text" id="text-server">Checking...</span>  
+                </div>  
+                <div class="status-item" id="status-api">  
+                    <span class="status-indicator" id="indicator-api"></span>  
+                    <span class="status-label">API</span>  
+                    <span class="status-text" id="text-api">Checking...</span>  
+                </div>  
+                <div class="status-item" id="status-db">  
+                    <span class="status-indicator" id="indicator-db"></span>  
+                    <span class="status-label">Database</span>  
+                    <span class="status-text" id="text-db">Checking...</span>  
+                </div>  
+            </div>  
+  
+            <!-- Sync Button for Offline Data -->  
+            <div class="sync-section" id="sync-section" style="display: none;">  
+                <div class="sync-header">  
+                    <span>📤 Sync Offline Data</span>  
+                    <span class="sync-badge" id="sync-count">0</span>  
+                </div>  
+                <div class="sync-info" id="sync-info">  
+                    <span id="sync-text">No pending changes</span>  
+                </div>  
+                <button class="sync-btn" id="sync-btn" onclick="syncOfflineData()" disabled>  
+                    <span id="sync-btn-text">🔄 Sync Now</span>  
+                </button>  
+                <div class="sync-status" id="sync-status"></div>  
+            </div>  
+        </div>  
+    </aside>  
+  
+    <!-- ===== MAIN CONTENT ===== -->  
+    <main class="main-content">  
+        <!-- TOP BAR -->  
+        <header class="topbar">  
+            <div class="topbar-left">  
+                <h1>📊 Dashboard</h1>  
+                <span class="date-badge" id="current-date"></span>  
+            </div>  
+            <div class="topbar-right">  
+                <div class="search-box">  
+                    <span>🔍</span>  
+                    <input type="text" placeholder="Search tasks..." id="searchInput" oninput="filterTasks()">  
+                </div>  
+                <button class="icon-btn" title="Notifications">  
+                    🔔  
+                    <span class="notif-dot"></span>  
+                </button>  
+                <button class="icon-btn" title="Refresh" onclick="renderAll()">🔄</button>  
+                <button class="btn btn-primary" onclick="openAddModal()">  
+                    <span>➕</span> Add Task  
+                </button>  
+            </div>  
+        </header>  
+  
+        <!-- PAGE CONTENT -->  
+        <div class="page-content">  
+            <!-- STATS -->  
+            <div class="stats-grid" id="stats-grid">  
+                <!-- Populated by JS -->  
+            </div>  
+  
+            <!-- VIEW CONTROLS -->  
+            <div class="view-controls">  
+                <div class="view-tabs">  
+                    <div class="view-tab active" onclick="switchView('kanban', this)">  
+                        <span>📌</span> Kanban Board  
+                    </div>  
+                    <div class="view-tab" onclick="switchView('table', this)">  
+                        <span>📋</span> Table View  
+                    </div>  
+                    <div class="view-tab" onclick="switchView('list', this)">  
+                        <span>📝</span> List View  
+                    </div>  
+                </div>  
+                <div class="filter-group">  
+                    <select class="filter-select" id="filterPriority" onchange="filterTasks()">  
+                        <option value="">All Priorities</option>  
+                        <option value="Critical">🔴 Critical</option>  
+                        <option value="High">🟠 High</option>  
+                        <option value="Medium">🟡 Medium</option>  
+                        <option value="Low">🟢 Low</option>  
+                    </select>  
+                    <div class="checkbox-dropdown filter-checkbox-dropdown" id="filterAssigneeDropdown">  
+                        <div class="checkbox-dropdown-header" onclick="toggleAssigneeDropdown('filterAssigneeDropdown')">  
+                            <span id="filterAssigneeDisplay">All Assignees</span>  
+                            <span class="dropdown-arrow">▼</span>  
+                        </div>  
+                        <div class="checkbox-dropdown-content" id="filterAssigneeContent">  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="" id="filterAllAssignees" checked onchange="updateFilterAssigneeDisplay()">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">All Assignees</span>  
+                            </label>  
+                            <div class="checkbox-divider"></div>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Rahul" class="filter-assignee-option" onchange="handleFilterAssigneeChange()">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Rahul</span>  
+                                <span class="assignee-color" style="background:#6366f1"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Suraj" class="filter-assignee-option" onchange="handleFilterAssigneeChange()">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Suraj</span>  
+                                <span class="assignee-color" style="background:#ec4899"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Neet" class="filter-assignee-option" onchange="handleFilterAssigneeChange()">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Neet</span>  
+                                <span class="assignee-color" style="background:#f59e0b"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Anita" class="filter-assignee-option" onchange="handleFilterAssigneeChange()">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Anita</span>  
+                                <span class="assignee-color" style="background:#10b981"></span>  
+                            </label>  
+                        </div>  
+                        <!-- Hidden select for compatibility -->  
+                        <select id="filterAssignee" style="display:none;">  
+                            <option value="">All Assignees</option>  
+                        </select>  
+                    </div>  
+                    <select class="filter-select" id="filterStatus" onchange="filterTasks()">
+                        <option value="">All Statuses</option>
+                        <option value="Unassigned">Unassigned</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="UAT Completed">UAT Completed</option>
+                        <option value="Deprecated">Deprecated</option>
+                        <option value="Blocked">Blocked</option>
+                        <option value="Deployed">Deployed</option>
+                        <option value="Rollbacked">Rollbacked</option>
+                    </select>
+                    <button class="btn btn-secondary btn-sm" onclick="clearFilters()">✕ Clear</button>  
+                </div>  
+            </div>  
+  
+            <!-- KANBAN VIEW -->  
+            <div class="view-container active" id="view-kanban">  
+                <div class="kanban-board" id="kanban-board">  
+                    <!-- Populated by JS -->  
+                </div>  
+            </div>  
+  
+            <!-- TABLE VIEW -->  
+            <div class="view-container" id="view-table">  
+                <div class="table-view">  
+                    <table class="task-table">  
+                        <thead>  
+                            <tr>  
+                                <th>Task</th>  
+                                <th>Status</th>  
+                                <th>Priority</th>  
+                                <th>Assignee</th>  
+                                <th>Start Date</th>  
+                                <th>Due Date</th>  
+                                <th>Tags</th>  
+                                <th>Actions</th>  
+                            </tr>  
+                        </thead>  
+                        <tbody id="table-body">  
+                            <!-- Populated by JS -->  
+                        </tbody>  
+                    </table>  
+                </div>  
+            </div>  
+  
+            <!-- LIST VIEW -->  
+            <div class="view-container" id="view-list">  
+                <div class="list-view" id="list-view">  
+                    <!-- Populated by JS -->  
+                </div>  
+            </div>  
+        </div>  
+    </main>  
+</div>  
+  
+<!-- ===== ADD/EDIT TASK MODAL ===== -->  
+<div class="modal-overlay" id="taskModal">  
+    <div class="modal">  
+        <div class="modal-header">  
+            <h2 id="modalTitle">➕ Add New Task</h2>  
+            <button class="modal-close" onclick="closeModal()">✕</button>  
+        </div>  
+        <div class="modal-body">  
+            <input type="hidden" id="editTaskId">  
+  
+            <div class="form-group">  
+                <label>Task Title <span class="required">*</span></label>  
+                <input type="text" class="form-input" id="taskTitle" placeholder="e.g., Verify login page regression">  
+            </div>  
+  
+            <div class="form-group">  
+                <label>Description</label>  
+                <textarea class="form-input" id="taskDesc" placeholder="Describe the task in detail..."></textarea>  
+            </div>  
+  
+            <div class="form-row">  
+                <div class="form-group">  
+                    <label>Status <span class="required">*</span></label>  
+                    <select class="form-input" id="taskStatus">
+                        <option value="Unassigned">🔍 Unassigned</option>
+                        <option value="Assigned">👤 Assigned</option>
+                        <option value="In Progress">🔄 In Progress</option>
+                        <option value="UAT Completed">🏆 UAT Completed</option>
+                        <option value="Deprecated">📦 Deprecated</option>
+                        <option value="Blocked">🚫 Blocked</option>
+                        <option value="Deployed">🚀 Deployed</option>
+                        <option value="Rollbacked">↩️ Rollbacked</option>
+                    </select>
+                </div>  
+                <div class="form-group">  
+                    <label>Priority <span class="required">*</span></label>  
+                    <select class="form-input" id="taskPriority">  
+                        <option value="Low">🟢 Low</option>  
+                        <option value="Medium" selected>🟡 Medium</option>  
+                        <option value="High">🟠 High</option>  
+                        <option value="Critical">🔴 Critical</option>  
+                    </select>  
+                </div>  
+            </div>  
+  
+            <div class="form-row">  
+                <div class="form-group">  
+                    <label>Assignee(s) <span class="required">*</span></label>  
+                    <div class="checkbox-dropdown" id="taskAssigneeDropdown">  
+                        <div class="checkbox-dropdown-header" onclick="toggleAssigneeDropdown('taskAssigneeDropdown')">  
+                            <span id="taskAssigneeDisplay">Select Assignees...</span>  
+                            <span class="dropdown-arrow">▼</span>  
+                        </div>  
+                        <div class="checkbox-dropdown-content" id="taskAssigneeContent">  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Rahul" onchange="updateAssigneeDisplay('taskAssignee')">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Rahul</span>  
+                                <span class="assignee-color" style="background:#6366f1"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Suraj" onchange="updateAssigneeDisplay('taskAssignee')">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Suraj</span>  
+                                <span class="assignee-color" style="background:#ec4899"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Neet" onchange="updateAssigneeDisplay('taskAssignee')">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Neet</span>  
+                                <span class="assignee-color" style="background:#f59e0b"></span>  
+                            </label>  
+                            <label class="checkbox-item">  
+                                <input type="checkbox" value="Anita" onchange="updateAssigneeDisplay('taskAssignee')">  
+                                <span class="checkmark"></span>  
+                                <span class="assignee-name">Anita</span>  
+                                <span class="assignee-color" style="background:#10b981"></span>  
+                            </label>  
+                        </div>  
+                    </div>  
+                    <!-- Hidden select for compatibility -->  
+                    <select id="taskAssignee" multiple style="display:none;">  
+                        <option value="Rahul">Rahul</option>  
+                        <option value="Suraj">Suraj</option>  
+                        <option value="Neet">Neet</option>  
+                        <option value="Anita">Anita</option>  
+                    </select>  
+                </div>  
+                <div class="form-group">  
+                    <label>Start Date <span class="required">*</span></label>  
+                    <input type="date" class="form-input" id="taskStartDate" required>  
+                </div>
+                <div class="form-group">  
+                    <label>Due Date <span class="required">*</span></label>  
+                    <input type="date" class="form-input" id="taskDueDate" required>  
+                </div>  
+            </div>  
+  
+            <div class="form-group">  
+                <label>Tags (hold Ctrl to select multiple)</label>  
+                <select class="form-input" id="taskTags" multiple style="min-height:90px;">  
+                    <option value="Bug">🐛 Prod SD Ticket</option>  
+                    <option value="Feature">🆕 Feature</option>  
+                    <option value="Regression">🔁 Regression</option>  
+                    <option value="Automation">🤖 Automation</option>  
+                    <option value="Manual">✋ Manual</option>  
+                    <option value="API">🔌 API</option>  
+                    <option value="UI">🎨 UI</option>  
+                    <option value="Performance">⚡ Performance</option>  
+                </select>  
+            </div>  
+  
+            <div class="form-group">  
+                <label>Module / Component</label>  
+                <input type="text" class="form-input" id="taskModule" placeholder="e.g., Login, Payment, Dashboard">  
+            </div>  
+  
+            <div class="form-group">  
+                <label>Environment</label>  
+                <select class="form-input" id="taskEnv">  
+                    <option value="QA">QA</option>  
+                    <option value="Staging">Staging</option>  
+                    <option value="UAT">UAT</option>  
+                    <option value="Production">Production</option>  
+                </select>  
+            </div>  
+        </div>  
+        <div class="modal-footer">  
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>  
+            <button class="btn btn-primary" onclick="saveTask()">💾 Save Task</button>  
+        </div>  
+    </div>  
+</div>  
+  
+<!-- TOAST CONTAINER -->  
+<div class="toast-container" id="toast-container"></div>  
+  
+<script src="public/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+{
+  "test_metadata": {
+    "project": "Upstox Automation",
+    "version": "1.0",
+    "last_updated": "2026-02-11",
+    "description": "Test data for Upstox login and registration flow"
+  },
+  "_comment": "MOBILE NUMBERS: Import from validators/mobile_validator.py",
+  "_comment": "Use: from validators.mobile_validator import get_mobile_test_cases",
+  "mobile_numbers_reference": "validators/mobile_validator.py",
+  "email_addresses": {
+    "valid": [
+      {
+        "email": "Rahul.hajari@rksv.in",
+        "description": "Valid email address",
+        "expected": "PASS"
+      },
+      {
+        "email": "test.user@example.com",
+        "description": "Valid email with different domain",
+        "expected": "PASS"
+      }
+    ],
+    "invalid": [
+      {
+        "email": "test@",
+        "description": "Missing domain",
+        "expected": "FAIL",
+        "error_message": "Invalid email format - missing domain"
+      },
+      {
+        "email": "@rksv.in",
+        "description": "Missing local part",
+        "expected": "FAIL",
+        "error_message": "Invalid email format - missing local part"
+      },
+      {
+        "email": "test@domain",
+        "description": "Missing TLD",
+        "expected": "FAIL",
+        "error_message": "Invalid email format - missing TLD"
+      },
+      {
+        "email": "",
+        "description": "Empty email",
+        "expected": "FAIL",
+        "error_message": "Email is empty"
+      },
+      {
+        "email": "test..user@rksv.in",
+        "description": "Double dots in local part",
+        "expected": "FAIL",
+        "error_message": "Invalid email format - consecutive dots"
+      }
+    ]
+  },
+  "otp_scenarios": {
+    "valid": [
+      {
+        "otp": "123456",
+        "description": "Valid 6-digit OTP",
+        "expected": "PASS"
+      }
+    ],
+    "invalid": [
+      {
+        "otp": "12345",
+        "description": "Less than 6 digits",
+        "expected": "FAIL",
+        "error_message": "OTP must be 6 digits"
+      },
+      {
+        "otp": "1234567",
+        "description": "More than 6 digits",
+        "expected": "FAIL",
+        "error_message": "OTP must be 6 digits"
+      },
+      {
+        "otp": "abcdef",
+        "description": "Non-numeric OTP",
+        "expected": "FAIL",
+        "error_message": "OTP must contain only digits"
+      },
+      {
+        "otp": "",
+        "description": "Empty OTP",
+        "expected": "FAIL",
+        "error_message": "OTP is empty"
+      },
+      {
+        "otp": "000000",
+        "description": "Invalid/expired OTP",
+        "expected": "FAIL",
+        "error_message": "Invalid or expired OTP"
+      }
+    ]
+  },
+  "test_cases": {
+    "login_flow": [
+      {
+        "tc_id": "TC-01",
+        "description": "Open Chrome and navigate to upstox.com",
+        "type": "navigation",
+        "data": {},
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-02",
+        "description": "Find and click Sign In button",
+        "type": "ui_interaction",
+        "data": {},
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-03",
+        "description": "Enter valid mobile number",
+        "type": "input_validation",
+        "data": {
+          "mobile": "9552931377"
+        },
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-04",
+        "description": "Enter invalid mobile number (less digits)",
+        "type": "input_validation",
+        "data": {
+          "mobile": "12345"
+        },
+        "expected": "FAIL"
+      },
+      {
+        "tc_id": "TC-05",
+        "description": "Handle Cloudflare checkbox (conditional)",
+        "type": "conditional",
+        "data": {},
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-06",
+        "description": "Click Get OTP button",
+        "type": "ui_interaction",
+        "data": {},
+        "expected": "PASS"
+      }
+    ],
+    "email_flow": [
+      {
+        "tc_id": "TC-07",
+        "description": "Handle Email screen (conditional - one-time)",
+        "type": "conditional",
+        "data": {},
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-08",
+        "description": "Enter valid email address",
+        "type": "input_validation",
+        "data": {
+          "email": "Rahul.hajari@rksv.in"
+        },
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-09",
+        "description": "Enter invalid email (missing domain)",
+        "type": "input_validation",
+        "data": {
+          "email": "test@"
+        },
+        "expected": "FAIL"
+      },
+      {
+        "tc_id": "TC-10",
+        "description": "Click Continue button",
+        "type": "ui_interaction",
+        "data": {},
+        "expected": "PASS"
+      }
+    ],
+    "otp_flow": [
+      {
+        "tc_id": "TC-11",
+        "description": "Enter valid OTP",
+        "type": "input_validation",
+        "data": {
+          "otp": "123456"
+        },
+        "expected": "PASS"
+      },
+      {
+        "tc_id": "TC-12",
+        "description": "Enter invalid OTP (wrong digits)",
+        "type": "input_validation",
+        "data": {
+          "otp": "000000"
+        },
+        "expected": "FAIL"
+      },
+      {
+        "tc_id": "TC-13",
+        "description": "Browser remains open",
+        "type": "state_check",
+        "data": {},
+        "expected": "PASS"
+      }
+    ]
+  },
+  "_comment_mobile": "Import default mobile from validators/mobile_validator.py: DEFAULT_MOBILE_NUMBER",
+  "automation_config": {
+    "default_email": "Rahul.hajari@rksv.in",
+    "base_url": "https://upstox.com/",
+    "timeouts": {
+      "page_load": 10,
+      "element_wait": 10,
+      "otp_wait": 60
+    }
+  }
+}

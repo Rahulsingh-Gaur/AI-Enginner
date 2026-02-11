@@ -1,0 +1,29 @@
+╔══════════════════════════════════════════════════════════╗
+║     ⚠️  APPROVAL REQUIRED FOR DATABASE OPERATION         ║
+╚══════════════════════════════════════════════════════════╝
+
+Operation: [DELETE / RESET / REINITIALIZE]
+Target: [Database / Tasks / Records]
+
+⚠️  WARNING: This action CANNOT be undone!
+
+📋 Details:
+- Database file: database/qa_dashboard.db
+- Current task count: [X] tasks
+- This operation will: [PERMANENTLY DELETE DATA]
+
+🔒 SECURITY CHECK:
+I need your EXPLICIT approval before proceeding.
+
+✏️  To approve, please reply EXACTLY:
+"I APPROVE deletion of [specific target]"
+
+Example approvals:
+- "I APPROVE deletion of all tasks"
+- "I APPROVE reset of entire database"
+- "I APPROVE deletion of task ID 123"
+
+❌ If you do NOT approve, reply:
+"CANCEL operation"
+
+═══════════════════════════════════════════════════════════

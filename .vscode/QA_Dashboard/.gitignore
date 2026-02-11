@@ -1,0 +1,33 @@
+# Dependencies
+backend/node_modules/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+database/*.db
+database/*.db-journal
+
+# Environment variables
+.env
+backend/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Backup files
+*.backup
+*.bak
+*~

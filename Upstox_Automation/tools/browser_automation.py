@@ -2,12 +2,19 @@
 """
 Browser Automation Tool using Selenium
 Opens Chrome, navigates to Upstox, clicks Sign In, enters mobile number, 
-handles Cloudflare checkbox, keeps browser open.
+handles Cloudflare checkbox, enters email (if screen appears), keeps browser open.
+
+MOBILE NUMBER: Imported from validators/mobile_validator.py (Single Source of Truth)
 """
 
 import time
 import random
 import sys
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -15,6 +22,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+
+# Import default mobile number from single source of truth
+from validators.mobile_validator import DEFAULT_MOBILE_NUMBER
 
 
 def human_delay(min_sec=0.5, max_sec=1.5):
@@ -30,10 +40,11 @@ def type_like_human(element, text):
         time.sleep(random.uniform(0.01, 0.03))  # 10-30ms per character
 
 
-def open_browser_and_login(url: str = "https://upstox.com/", mobile_number: str = "9552931377") -> None:
+def open_browser_and_login(url: str = "https://upstox.com/", mobile_number: str = DEFAULT_MOBILE_NUMBER) -> None:
     """
     Open Chrome browser, navigate to Upstox, click Sign In, 
-    enter mobile number, handle Cloudflare checkbox, keep browser open.
+    enter mobile number, handle Cloudflare checkbox, handle email screen (conditional),
+    keep browser open.
     
     Args:
         url: Target URL to navigate to
@@ -267,12 +278,129 @@ def open_browser_and_login(url: str = "https://upstox.com/", mobile_number: str 
             print("⚠️ 'Get OTP' button not found")
             driver.save_screenshot(".tmp/get_otp_not_found.png")
         
+        # ============================================
+        # STEP 5: Handle Email Screen (Conditional - appears only once)
+        # ============================================
+        print("\n🔍 STEP 5: Checking for Email screen (one-time occurrence)...")
+        
+        # Wait for page transition after Get OTP
+        print("⏳ Waiting for page transition after OTP request...")
+        human_delay(2, 3)
+        
+        email_screen_found = False
+        email_address = "Rahul.hajari@rksv.in"
+        
+        # Check for email screen label or input field
+        xpaths_email_label = [
+            "//*[contains(text(), \"What's your email address?\")]",
+            "//*[contains(text(), 'email address')]",
+            "//label[contains(text(), 'email')]",
+        ]
+        
+        xpaths_email_input = [
+            "//input[@placeholder='Enter your email address']",
+            "//input[contains(@placeholder, 'email')]",
+            "//input[@type='email']",
+            "//input[contains(@id, 'email')]",
+            "//input[contains(@name, 'email')]",
+        ]
+        
+        # Check if email screen is present
+        try:
+            email_label = None
+            for xpath in xpaths_email_label:
+                try:
+                    email_label = WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located((By.XPATH, xpath))
+                    )
+                    print(f"✅ Found email screen label using XPath: {xpath}")
+                    email_screen_found = True
+                    break
+                except:
+                    continue
+            
+            # Also check for email input field
+            email_input = None
+            for xpath in xpaths_email_input:
+                try:
+                    email_input = WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located((By.XPATH, xpath))
+                    )
+                    if not email_screen_found:
+                        print(f"✅ Found email input field using XPath: {xpath}")
+                        email_screen_found = True
+                    break
+                except:
+                    continue
+            
+            # If email screen found, enter email and click Continue
+            if email_screen_found and email_input:
+                print("✅ Email screen detected!")
+                
+                # Scroll into view
+                driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", email_input)
+                human_delay(0.3, 0.6)
+                
+                # Click to focus
+                email_input.click()
+                human_delay(0.2, 0.4)
+                
+                # Clear existing content
+                email_input.clear()
+                human_delay(0.1, 0.2)
+                
+                # Type email address
+                print(f"⌨️ Entering email address: {email_address}")
+                type_like_human(email_input, email_address)
+                print("✅ Email address entered!")
+                human_delay(0.5, 1)
+                
+                # Find and click Continue button
+                print("🔍 Looking for Continue button...")
+                xpaths_continue_button = [
+                    "//button[contains(text(), 'Continue')]",
+                    "//button[contains(text(), 'CONTINUE')]",
+                    "//button[@type='submit']",
+                    "//button[contains(@class, 'continue')]",
+                    "//button[contains(@id, 'continue')]",
+                ]
+                
+                continue_button = None
+                for xpath in xpaths_continue_button:
+                    try:
+                        continue_button = WebDriverWait(driver, 5).until(
+                            EC.element_to_be_clickable((By.XPATH, xpath))
+                        )
+                        print(f"✅ Found Continue button using XPath: {xpath}")
+                        break
+                    except:
+                        continue
+                
+                if continue_button:
+                    # Scroll and click
+                    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", continue_button)
+                    human_delay(0.3, 0.6)
+                    print("🖱️ Clicking Continue button...")
+                    ActionChains(driver).move_to_element(continue_button).click().perform()
+                    print("✅ Continue button clicked successfully!")
+                    human_delay(1, 2)
+                else:
+                    print("⚠️ Continue button not found")
+                    driver.save_screenshot(".tmp/continue_button_not_found.png")
+            else:
+                print("ℹ️ Email screen not present (already completed) - continuing...")
+                
+        except Exception as e:
+            print(f"ℹ️ Email screen check completed: {e}")
+        
         print("\n" + "="*50)
         print("✅ TASK COMPLETE!")
         print("="*50)
         print("📱 Mobile number entered:", mobile_number)
         if otp_button:
             print("🔔 Get OTP button clicked!")
+        if email_screen_found:
+            print("📧 Email address entered: Rahul.hajari@rksv.in")
         print("📝 Browser will remain open for manual verification.")
         print("🔒 Close the browser manually when done.")
         print("="*50)
