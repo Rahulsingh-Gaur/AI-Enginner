@@ -1,0 +1,88 @@
+{
+  "test_execution": {
+    "date": "2026-02-23",
+    "time": "12:29:52",
+    "timestamp": "2026-02-23T12:29:52.482159",
+    "environment": "UAT",
+    "base_url": "https://service-uat.upstox.com"
+  },
+  "test_data": {
+    "mobile_number": "8181823596",
+    "email": "2y7z4xu16b_@gmail.com",
+    "otp_used": "123789"
+  },
+  "api_results": [
+    {
+      "stage": 1,
+      "api_name": "Generate OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "Enter the 6-digit OTP received on 81****3596",
+      "timestamp": "2026-02-23T12:29:55.328499"
+    },
+    {
+      "stage": 2,
+      "api_name": "Verify OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "Your OTP has been successfully verified.",
+      "details": {
+        "user_type": "LEAD",
+        "profile_id": 3821601
+      },
+      "timestamp": "2026-02-23T12:29:55.683975"
+    },
+    {
+      "stage": 3,
+      "api_name": "2FA Authentication",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "2FA Successful",
+      "details": {
+        "redirect_uri": "https://uat-pro.upstox.com",
+        "user_type": "LEAD",
+        "customer_status": "NEW"
+      },
+      "timestamp": "2026-02-23T12:29:55.790555"
+    },
+    {
+      "stage": 4,
+      "api_name": "Email Send OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "OTP sent successfully",
+      "details": {
+        "email_used": "2y7z4xu16b_@gmail.com"
+      },
+      "timestamp": "2026-02-23T12:29:56.020522"
+    },
+    {
+      "stage": 5,
+      "api_name": "Email Verify OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "OTP verified successfully",
+      "details": {
+        "email_verified": "2y7z4xu16b_@gmail.com"
+      },
+      "timestamp": "2026-02-23T12:29:56.400132"
+    }
+  ],
+  "summary": {
+    "total_stages": 5,
+    "passed": 5,
+    "failed": 0,
+    "success_rate": "100%",
+    "overall_status": "PASS",
+    "final_data": {
+      "mobile_number": "8181823596",
+      "email": "2y7z4xu16b_@gmail.com",
+      "profile_id": 3821601,
+      "user_type": "LEAD",
+      "customer_status": "NEW",
+      "redirect_uri": "https://uat-pro.upstox.com",
+      "email_send_status": null,
+      "email_verify_status": null
+    }
+  }
+}

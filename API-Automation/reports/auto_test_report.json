@@ -1,0 +1,88 @@
+{
+  "test_execution": {
+    "date": "2026-03-02",
+    "time": "17:32:23",
+    "timestamp": "2026-03-02T17:32:23.399981",
+    "environment": "UAT",
+    "base_url": "https://service-uat.upstox.com"
+  },
+  "test_data": {
+    "mobile_number": "9833087408",
+    "email": "1pszw3xvhm_@gmail.com",
+    "otp_used": "123789"
+  },
+  "api_results": [
+    {
+      "stage": 1,
+      "api_name": "Generate OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "Enter the 6-digit OTP received on 98****7408",
+      "timestamp": "2026-03-02T17:32:25.733640"
+    },
+    {
+      "stage": 2,
+      "api_name": "Verify OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "Your OTP has been successfully verified.",
+      "details": {
+        "user_type": "LEAD",
+        "profile_id": 3821738
+      },
+      "timestamp": "2026-03-02T17:32:26.654813"
+    },
+    {
+      "stage": 3,
+      "api_name": "2FA Authentication",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "2FA Successful",
+      "details": {
+        "redirect_uri": "https://uat-pro.upstox.com",
+        "user_type": "LEAD",
+        "customer_status": "NEW"
+      },
+      "timestamp": "2026-03-02T17:32:26.761562"
+    },
+    {
+      "stage": 4,
+      "api_name": "Email Send OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "OTP sent successfully",
+      "details": {
+        "email_used": "1pszw3xvhm_@gmail.com"
+      },
+      "timestamp": "2026-03-02T17:32:27.028915"
+    },
+    {
+      "stage": 5,
+      "api_name": "Email Verify OTP",
+      "status": "PASS",
+      "status_code": 200,
+      "message": "OTP verified successfully",
+      "details": {
+        "email_verified": "1pszw3xvhm_@gmail.com"
+      },
+      "timestamp": "2026-03-02T17:32:27.217982"
+    }
+  ],
+  "summary": {
+    "total_stages": 5,
+    "passed": 5,
+    "failed": 0,
+    "success_rate": "100%",
+    "overall_status": "PASS",
+    "final_data": {
+      "mobile_number": "9833087408",
+      "email": "1pszw3xvhm_@gmail.com",
+      "profile_id": 3821738,
+      "user_type": "LEAD",
+      "customer_status": "NEW",
+      "redirect_uri": "https://uat-pro.upstox.com",
+      "email_send_status": null,
+      "email_verify_status": null
+    }
+  }
+}

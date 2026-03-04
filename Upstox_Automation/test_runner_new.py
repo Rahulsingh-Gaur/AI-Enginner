@@ -27,15 +27,17 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Run Happy Path test (single complete flow)
+  # Run Happy Path test (GUI mode with browser)
   python3 test_runner_new.py --mode happy
   
-  # Run Regression test (all validations)
+  # Run Regression test (GUI mode with browser)
   python3 test_runner_new.py --mode regression
   
   # Run with specific report format
   python3 test_runner_new.py --mode happy --report html
   python3 test_runner_new.py --mode regression --report json
+  
+Note: GUI mode is required for OTP entry. CLI mode disabled.
         """
     )
     
@@ -59,6 +61,13 @@ Examples:
         help="Output directory for reports (default: reports)"
     )
     
+    # NOTE: CLI/Headless mode disabled - OTP requires GUI interaction
+    # parser.add_argument(
+    #     "--headless", "-hl",
+    #     action="store_true",
+    #     help="Run in CLI/Headless mode (no browser window)"
+    # )
+    
     args = parser.parse_args()
     
     print("\n" + "=" * 70)
@@ -66,25 +75,28 @@ Examples:
     print("=" * 70)
     print(f"📋 Mode: {args.mode.upper()}")
     print(f"📄 Report: {args.report}")
+    print(f"👤 Mode: GUI (Browser window will open)")
     print("=" * 70)
     
-    # Run the appropriate test
+    # Run the appropriate test (GUI mode only - CLI disabled for OTP)
     if args.mode == "happy":
         print("\n🟢 Running HAPPY PATH TEST...")
         print("   - Single complete login flow")
         print("   - Mobile: 9552931377")
         print("   - Email: Rahul.hajari@rksv.in")
-        print("   - Flow: Mobile → OTP → Email → Continue\n")
+        print("   - Flow: Mobile → OTP → Email → Continue")
+        print("   - Note: GUI mode required for OTP entry\n")
         
-        result = run_happy_path_test()
+        result = run_happy_path_test(headless=False)
         
     elif args.mode == "regression":
         print("\n🔴 Running REGRESSION TEST...")
         print("   - All mobile number validations")
         print("   - 13 Invalid + 4 Valid = 17 Total Tests")
-        print("   - Tests format, length, series validation\n")
+        print("   - Tests format, length, series validation")
+        print("   - Note: GUI mode required\n")
         
-        result = run_regression_test()
+        result = run_regression_test(headless=False)
     
     else:
         print(f"❌ Unknown mode: {args.mode}")

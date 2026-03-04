@@ -1,0 +1,185 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -688,
+        -16
+      ],
+      "id": "49b2fd47-3980-4a72-8262-6e8ef50c6456",
+      "name": "When chat message received",
+      "webhookId": "76370910-4b8b-4a27-82f9-074aac04eb63"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Given the following error log entry, generate a concise bug report summary in the specified format. Infer the steps to reproduce, expected behavior, and actual behavior from the log details. Use your judgment to assign an appropriate severity level (Low, Medium, or High) based on the impact.\n\nThe workflow parses the error log, identifies the endpoint, error code, and root cause, then generates a structured bug report without inventing details.\n\nOutput format:\nTitle: \"<Error log >\"\nSeverity: <Low/Medium/High>\nSteps: \"<steps to reproduce>\"\nExpected: \"<expected behavior>\"\nActual: \"<actual behavior>\"\n\nThe workflow parses the error log, identifies the endpoint, error code, and root cause, then generates a structured bug report without inventing details.",
+        "options": {
+          "systemMessage": ""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -480,
+        -16
+      ],
+      "id": "c8416664-1a19-414b-aa49-8d7b1ca24dbc",
+      "name": "AI Agent",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "model": "moonshotai/kimi-k2-instruct",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        224
+      ],
+      "id": "265922f8-208e-465e-b075-cf88c6b92cf5",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "F98fpqGoLimgn87p",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        304
+      ],
+      "id": "3465935d-8578-46fb-8f98-46a02a5cdfca",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "U10FTvHzsrW4VyFS",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/16AMZCDnp9ehQJQ4X7cHiRAJQGF8CgLeMRoGPlxnPQq0/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1015785303,
+          "mode": "list",
+          "cachedResultName": "Sheet4",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16AMZCDnp9ehQJQ4X7cHiRAJQGF8CgLeMRoGPlxnPQq0/edit#gid=1015785303"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "a2149d32-b22a-4dbe-8802-bde0dd6765c4",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CvZwosGb1n3Xxv9O",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d72725c3-f0ad-49f7-a4b8-7c2c99f468cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6f7bce7395d47a078a81e14b0066c81fb8866d33ed5ba2edbfd5cb969385bc99"
+  },
+  "id": "mvVWs0THvxtkXSNh",
+  "tags": []
+}

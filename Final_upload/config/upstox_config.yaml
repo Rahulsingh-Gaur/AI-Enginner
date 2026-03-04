@@ -1,0 +1,32 @@
+# Upstox API Configuration
+# Base URL: https://service-uat.upstox.com/
+
+upstox:
+  base_url: "https://service-uat.upstox.com"
+  
+  # API Endpoints
+  endpoints:
+    generate_otp:
+      path: "/login/open/v8/auth/1fa/otp-step/generate"
+      method: "POST"
+      description: "Generate OTP and validateOTPToken"
+    
+    validate_otp:
+      path: "/login/open/v8/auth/1fa/otp-step/validate"
+      method: "POST"
+      description: "Validate OTP using validateOTPToken"
+    
+    login:
+      path: "/login/open/v8/auth/1fa/login"
+      method: "POST"
+      description: "Login with validated OTP"
+
+  # Default Query Parameters
+  defaults:
+    request_id: "qatest4567"
+    
+  # Headers
+  headers:
+    Content-Type: "application/json"
+    Accept: "application/json"
+    User-Agent: "UpstoxAutomation/1.0"

@@ -39,20 +39,36 @@ def type_like_human(element, text):
 class RegressionTester:
     """Regression test suite for mobile number validation"""
     
-    def __init__(self):
+    def __init__(self, headless: bool = False):
         self.driver = None
         self.test_results = []
         self.url = "https://upstox.com/"
+        self.headless = headless
     
     def setup_browser(self):
         """Initialize Chrome browser"""
         print("🚀 Initializing Chrome browser...")
+        if self.headless:
+            print("   (Running in HEADLESS mode - no browser window)")
+        
         options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
+        
+        # Headless mode options
+        if self.headless:
+            options.add_argument("--headless=new")  # New headless mode
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--window-size=1920,1080")
+        else:
+            options.add_argument("--start-maximized")
+        
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option("detach", True)
+        
+        if not self.headless:
+            options.add_experimental_option("detach", True)
         
         service = Service(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=service, options=options)
@@ -389,9 +405,13 @@ class RegressionTester:
         print("=" * 70)
 
 
-def run_regression_test():
-    """Main entry point for regression test"""
-    tester = RegressionTester()
+def run_regression_test(headless: bool = False):
+    """Main entry point for regression test
+    
+    Args:
+        headless: If True, run in CLI mode without browser window
+    """
+    tester = RegressionTester(headless=headless)
     
     try:
         results = tester.run_regression_tests()

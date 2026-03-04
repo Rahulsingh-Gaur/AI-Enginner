@@ -1,0 +1,134 @@
+# Bitbucket Pipelines Configuration for API Automation
+# This pipeline runs tests on PRs and deployments
+
+image: python:3.11-slim
+
+definitions:
+  # Cache configuration
+  caches:
+    pip: ~/.cache/pip
+  
+  # Common steps
+  step_common: &step_common
+    name: Setup Environment
+    caches:
+      - pip
+    script:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+  
+  # Test step template
+  step_test: &step_test
+    name: Run Tests
+    caches:
+      - pip
+    script:
+      - pip install -r requirements.txt
+      - python run_tests.py $TEST_ARGS --env $ENVIRONMENT
+    artifacts:
+      - reports/**
+      - logs/**
+
+pipelines:
+  # Pull Request Pipeline
+  pull-requests:
+    '**':
+      - step:
+          name: Lint & Type Check
+          caches:
+            - pip
+          script:
+            - pip install -r requirements.txt
+            - black --check src tests
+            - flake8 src tests --max-line-length=100
+            - mypy src --ignore-missing-imports
+      
+      - step:
+          name: Run Smoke Tests
+          caches:
+            - pip
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --smoke --env staging --html
+          artifacts:
+            - reports/**
+            - logs/**
+  
+  # Default Branch Pipeline (after merge)
+  default:
+    - step:
+        <<: *step_test
+        name: Run Regression Tests
+        deployment: staging
+        script:
+          - pip install -r requirements.txt
+          - python run_tests.py --regression --env staging --html --coverage --parallel
+    
+    - step:
+        name: Generate Allure Report
+        image: frankescobar/allure-docker-service
+        script:
+          - allure generate reports/allure-results -o reports/allure-report --clean
+        artifacts:
+          - reports/allure-report/**
+  
+  # Custom Pipeline - Manual Trigger
+  custom:
+    smoke-tests:
+      - step:
+          <<: *step_test
+          name: Run Smoke Tests
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --smoke --env ${ENVIRONMENT:-staging} --html
+    
+    full-regression:
+      - step:
+          <<: *step_test
+          name: Full Regression Test Suite
+          deployment: staging
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --all --env staging --html --allure --coverage --parallel
+      
+      - step:
+          name: Publish Allure Report
+          image: frankescobar/allure-docker-service
+          script:
+            - allure generate reports/allure-results -o reports/allure-report --clean
+          artifacts:
+            - reports/allure-report/**
+    
+    production-smoke:
+      - step:
+          <<: *step_test
+          name: Production Smoke Tests
+          deployment: production
+          trigger: manual
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --smoke --env production --html
+  
+  # Tag Pipeline - Release
+  tags:
+    'release/*':
+      - step:
+          <<: *step_test
+          name: Pre-Release Validation
+          deployment: staging
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --all --env staging --html --coverage
+      
+      - step:
+          name: Production Deployment Tests
+          deployment: production
+          trigger: manual
+          script:
+            - pip install -r requirements.txt
+            - python run_tests.py --smoke --env production --html
+
+# Pipeline Options
+options:
+  docker: true
+  size: 2x  # Double memory for parallel test execution

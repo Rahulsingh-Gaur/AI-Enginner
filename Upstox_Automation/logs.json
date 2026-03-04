@@ -1,0 +1,147 @@
+{
+  "test_name": "Happy Path Test",
+  "session_id": "20260304_121408",
+  "start_time": "2026-03-04T12:14:08.728856",
+  "end_time": "2026-03-04T12:14:55.597980",
+  "logs": [
+    {
+      "timestamp": "2026-03-04T12:14:08.728871",
+      "step_number": 1,
+      "title": "OUTPUT: Test Start",
+      "status": "INFO",
+      "details": {
+        "message": "Happy Path Test initialized",
+        "data": {
+          "mobile": "9552931377",
+          "headless": false,
+          "mode": "GUI"
+        },
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:11.492796",
+      "step_number": 2,
+      "title": "OUTPUT: Browser Init",
+      "status": "INFO",
+      "details": {
+        "message": "Chrome browser initialized",
+        "data": {
+          "headless": false
+        },
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:11.847695",
+      "step_number": 3,
+      "title": "OUTPUT: Navigation",
+      "status": "INFO",
+      "details": {
+        "message": "Navigated to https://upstox.com/",
+        "data": {
+          "url": "https://upstox.com/"
+        },
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:14.902841",
+      "step_number": 4,
+      "title": "OUTPUT: Sign In",
+      "status": "INFO",
+      "details": {
+        "message": "Sign In button clicked",
+        "data": {},
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:28.108620",
+      "step_number": 5,
+      "title": "INPUT: Mobile Number",
+      "status": "INFO",
+      "details": {
+        "field": "Mobile Number",
+        "value": "9552931377",
+        "masked": false,
+        "type": "user_input"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:28.651615",
+      "step_number": 6,
+      "title": "OUTPUT: Get OTP",
+      "status": "INFO",
+      "details": {
+        "message": "Get OTP button clicked",
+        "data": {},
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:31.338593",
+      "step_number": 1,
+      "title": "Mobile Entry",
+      "status": "PASS",
+      "details": {
+        "mobile": "9552931377"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:34.443149",
+      "step_number": 8,
+      "title": "OUTPUT: OTP Screen",
+      "status": "INFO",
+      "details": {
+        "message": "OTP screen not found - may be email flow",
+        "data": {},
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:52.157511",
+      "step_number": 9,
+      "title": "OUTPUT: Email Screen",
+      "status": "INFO",
+      "details": {
+        "message": "Email screen not present - skipped",
+        "data": {},
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:52.161073",
+      "step_number": 10,
+      "title": "OUTPUT: Final URL",
+      "status": "INFO",
+      "details": {
+        "message": "Current URL: https://login.upstox.com/",
+        "data": {
+          "url": "https://login.upstox.com/"
+        },
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:55.596397",
+      "step_number": 11,
+      "title": "OUTPUT: Final Check",
+      "status": "INFO",
+      "details": {
+        "message": "OTP input not found",
+        "data": {},
+        "type": "system_output"
+      }
+    },
+    {
+      "timestamp": "2026-03-04T12:14:55.596406",
+      "step_number": 3,
+      "title": "Final Verification",
+      "status": "FAIL",
+      "details": {
+        "otp_screen": false
+      }
+    }
+  ]
+}
