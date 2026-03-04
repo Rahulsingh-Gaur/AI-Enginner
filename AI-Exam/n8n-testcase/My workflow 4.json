@@ -1,0 +1,290 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -368,
+        -320
+      ],
+      "id": "27897bfa-a7d3-460e-aa45-4f6b06f608f3",
+      "name": "When chat message received",
+      "webhookId": "7b11307e-5179-4142-9f18-ac4cd858eaf9"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "SCRUM-6",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -320
+      ],
+      "id": "62ef3373-6c86-4467-83f6-fafaf76f8591",
+      "name": "Get an issue",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "U8hWE7keuHb9NAL6",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=JIRA Test Case Generator\n\nYou are a QA Manager with 15+ years of experience in QA, Testing Fundamentals, AI, Automation, and Test Strategy.\n\nYour responsibility is to generate detailed, structured, and JIRA-compatible test cases based strictly on the input provided by the user.\n\n\n\n📌 Input Sources\n\nRefer the Jira ticket\n\n⚠️ Do NOT make assumptions.\n\n⚠️ Do NOT fabricate missing details.\n\n⚠️ Base all test cases strictly on the given input.\n\n📋 Test Case Coverage Requirements\n\nYou must prioritize and structure test cases in the following order:\n\n\n\nCritical Path Testing (High Priority)\n\nHappy Path Testing\n\nNegative Testing\n\nValidation Testing\n\nFunctional testing base on the Requimrent \n\nBoundary Value Analysis (BVA)\n\nEquivalence Class Partitioning\n\nSecurity Testing (if applicable)\n\nDatabase Testing (if applicable)\n\nUI Testing\n\nUX Testing\n\nImpact Analysis-based Testing (deep coverage of affected modules)\n\nApply only the relevant testing techniques based on the feature requirement.\n\n\n\n📊 Output Format (Strictly Follow This Table Structure)\n\nGenerate test cases in JIRA-compatible tabular format, using simple language so that a Junior QA can easily execute them.\n\nUse the exact column structure below:\n\n| TC_ID | Test Case Description | Steps | Pre-Requisite | Test Case Type | Test Data | Platform Details | Actual Output | Expected Output | Status |\n\n\n\nFormatting Rules:\n\nOutput must be in clean table format (easy to copy-paste into Google Sheets or JIRA).\n\nDo NOT modify background colors.\n\nUse clear, concise, and execution-ready steps.\n\nLeave \"Actual Output\" and \"Status\" blank.\n\nKeep test steps numbered.\n\nAvoid lengthy paragraphs.\n\n\n\n🧠 Additional Instructions\n\nPerform impact analysis based only on provided inputs.\n\nEnsure logical sequencing of test cases.\n\nAvoid duplicate test cases.\n\nKeep language simple and precise.\n\n\n\nIf information is missing, highlight it clearly instead of assuming.\n\n\n\n💡 Optional Suggestions\n\nIf you provide any improvements or recommendations beyond the requirement, clearly mark them as:\n\n(Optional Suggestion)\n\n\n\n🎯 Goal\n\nDeliver concise, structured, comprehensive, and execution-ready test cases that:\n\n\n\n {{ $json.fields.description }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        48,
+        -320
+      ],
+      "id": "307264ae-1ffc-4d59-ba97-b592b1ce3605",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -112
+      ],
+      "id": "767b7634-0a92-4cd1-829e-ff7ec0475c4f",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "F98fpqGoLimgn87p",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/16AMZCDnp9ehQJQ4X7cHiRAJQGF8CgLeMRoGPlxnPQq0/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 315410113,
+          "mode": "list",
+          "cachedResultName": "Sheet5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16AMZCDnp9ehQJQ4X7cHiRAJQGF8CgLeMRoGPlxnPQq0/edit#gid=315410113"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "TC_ID": "TC_ID"
+          },
+          "matchingColumns": [
+            "output"
+          ],
+          "schema": [
+            {
+              "id": "TC_ID",
+              "displayName": "TC_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Test Case Description",
+              "displayName": "Test Case Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Pre‑Requisite ",
+              "displayName": " Pre‑Requisite ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Steps",
+              "displayName": "Steps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Test Case Type",
+              "displayName": "Test Case Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Test Data",
+              "displayName": "Test Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " Platform Details ",
+              "displayName": " Platform Details ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Actual Output",
+              "displayName": "Actual Output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Expected Output",
+              "displayName": "Expected Output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -320
+      ],
+      "id": "49807a5e-dbee-45ff-ac99-d864313caa6d",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "CvZwosGb1n3Xxv9O",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Get an issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an issue": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "32ca7a2b-aaf4-4f24-9259-bcf11feba569",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6f7bce7395d47a078a81e14b0066c81fb8866d33ed5ba2edbfd5cb969385bc99"
+  },
+  "id": "Rr46mPqv2QkCbkLk",
+  "tags": []
+}
